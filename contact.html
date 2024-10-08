@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - Dice & Dragons</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Dice & Dragons</h1>
+      <nav>
+        <a href="home.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <div class="dropdown">
+          <button class="dropbtn" id="settings-toggle">Settings</button>
+          <div class="dropdown-content" id="settings-menu">
+            <button id="mode-toggle">🌓 Toggle Dark Mode</button>
+            <button id="font-toggle">Aa Toggle Font</button>
+            <div id="font-size-control">
+              <input
+                type="range"
+                id="font-size-slider"
+                min="25"
+                max="300"
+                value="100"
+                step="25"
+              />
+              <span id="font-size-value">100%</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="resizable-content">
+      <h2>Contact Us</h2>
+      <div class="contact-info">
+        <h3>Get in Touch</h3>
+        <p>We'd love to hear from you! Here's how you can reach us:</p>
+        <ul>
+          <li>Email: info@diceanddragons.com</li>
+          <li>Phone: (555) 123-4567</li>
+          <li>Address: 123 Gamer Street, Board City, TC 12345</li>
+        </ul>
+      </div>
+      <div class="contact-form">
+        <h3>Send us a Message</h3>
+        <form>
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+          
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+          
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" required></textarea>
+          
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Dice & Dragons. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const body = document.body;
+      const modeToggle = document.getElementById('mode-toggle');
+      const fontToggle = document.getElementById('font-toggle');
+      const fontSizeSlider = document.getElementById('font-size-slider');
+      const fontSizeValue = document.getElementById('font-size-value');
+      const resizableContent = document.querySelector('.resizable-content');
+      const settingsToggle = document.getElementById('settings-toggle');
+      const settingsMenu = document.getElementById('settings-menu');
+
+      function setMode(isDark) {
+        body.classList.toggle('dark-mode', isDark);
+        modeToggle.textContent = isDark
+          ? '☀️ Toggle Light Mode'
+          : '🌓 Toggle Dark Mode';
+        localStorage.setItem('darkMode', isDark);
+        updateDropdownStyles();
+      }
+
+      function setFont(isDyslexic) {
+        body.classList.toggle('dyslexic-font', isDyslexic);
+        fontToggle.textContent = isDyslexic
+          ? 'Aa Toggle Normal Font'
+          : 'Aa Toggle Dyslexic Font';
+        localStorage.setItem('dyslexicFont', isDyslexic);
+      }
+
+      function setFontSize(size) {
+        resizableContent.style.fontSize = size + '%';
+        fontSizeValue.textContent = size + '%';
+        localStorage.setItem('fontSize', size);
+      }
+
+      function updateDropdownStyles() {
+        if (body.classList.contains('dark-mode')) {
+          settingsMenu.style.backgroundColor = '#2c3e50';
+          settingsMenu.style.color = '#ecf0f1';
+        } else {
+          settingsMenu.style.backgroundColor = '#ecf0f1';
+          settingsMenu.style.color = '#2c3e50';
+        }
+      }
+
+      function toggleSettingsMenu(event) {
+        event.stopPropagation();
+        settingsMenu.classList.toggle('show');
+      }
+
+      const savedMode = localStorage.getItem('darkMode');
+      const savedFont = localStorage.getItem('dyslexicFont');
+      const savedFontSize = localStorage.getItem('fontSize');
+
+      if (savedMode !== null) {
+        setMode(savedMode === 'true');
+      }
+      if (savedFont !== null) {
+        setFont(savedFont === 'true');
+      }
+      if (savedFontSize !== null) {
+        fontSizeSlider.value = savedFontSize;
+        setFontSize(savedFontSize);
+      } else {
+        setFontSize(100);
+      }
+
+      settingsToggle.addEventListener('click', toggleSettingsMenu);
+
+      modeToggle.addEventListener('click', () => {
+        setMode(!body.classList.contains('dark-mode'));
+      });
+
+      fontToggle.addEventListener('click', () => {
+        setFont(!body.classList.contains('dyslexic-font'));
+      });
+
+      fontSizeSlider.addEventListener('input', () => {
+        const size = parseInt(fontSizeSlider.value);
+        setFontSize(size);
+      });
+
+      // Close the dropdown if the user clicks outside of it
+      window.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropbtn') && !settingsMenu.contains(event.target)) {
+          settingsMenu.classList.remove('show');
+        }
+      });
+
+      updateDropdownStyles();
+    </script>
+  </body>
+</html>

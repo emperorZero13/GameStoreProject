@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - Dice & Dragons</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Dice & Dragons</h1>
+      <nav>
+        <a href="home.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <div class="dropdown">
+          <button class="dropbtn" id="settings-toggle">Settings</button>
+          <div class="dropdown-content" id="settings-menu">
+            <button id="mode-toggle">🌓 Toggle Dark Mode</button>
+            <button id="font-toggle">Aa Toggle Font</button>
+            <div id="font-size-control">
+              <input
+                type="range"
+                id="font-size-slider"
+                min="25"
+                max="300"
+                value="100"
+                step="25"
+              />
+              <span id="font-size-value">100%</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="resizable-content">
+      <h2>About Dice & Dragons</h2>
+      
+      <section>
+        <h3>Our Story</h3>
+        <p>Founded in 2020 by a group of passionate gamers, Dice & Dragons has quickly become the premier destination for tabletop gaming enthusiasts. What started as a small online store has grown into a thriving community hub for players of all levels.</p>
+        <p>Our journey began when five friends realized there was a gap in the market for a one-stop shop that not only sold games but also fostered a sense of community. From that spark of an idea, Dice & Dragons was born.</p>
+      </section>
+
+      <section>
+        <h3>Our Mission</h3>
+        <p>At Dice & Dragons, our mission is simple: to bring the joy of tabletop gaming to as many people as possible. We believe that gaming is more than just a hobby - it's a way to connect with others, exercise your imagination, and create unforgettable stories.</p>
+        <p>We're committed to:</p>
+        <ul>
+          <li>Curating a diverse selection of high-quality games and accessories</li>
+          <li>Providing exceptional customer service and expert advice</li>
+          <li>Fostering an inclusive and welcoming gaming community</li>
+          <li>Supporting both established publishers and indie game creators</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Our Team</h3>
+        <p>The heart of Dice & Dragons is our dedicated team of gaming enthusiasts. Our staff includes:</p>
+        <ul>
+          <li>Experienced dungeon masters and game masters</li>
+          <li>Board game strategists and collectors</li>
+          <li>Miniature painting experts</li>
+          <li>Customer service professionals who are passionate about gaming</li>
+        </ul>
+        <p>Together, we work tirelessly to ensure that every customer finds the perfect game, expansion, or accessory to enhance their gaming experience.</p>
+      </section>
+
+      <section>
+        <h3>Community Engagement</h3>
+        <p>We believe that the true magic of tabletop gaming lies in the connections it creates. That's why we're committed to building a vibrant gaming community through:</p>
+        <ul>
+          <li>Regular in-store gaming events and tournaments</li>
+          <li>Online forums and discussion groups</li>
+          <li>A blog featuring game reviews, tips, and industry news</li>
+          <li>Partnerships with local gaming clubs and conventions</li>
+        </ul>
+        <p>Whether you're a seasoned pro or just starting your gaming journey, there's a place for you in the Dice & Dragons community. We invite you to join us and discover the endless possibilities of tabletop gaming!</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Dice & Dragons. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const body = document.body;
+      const modeToggle = document.getElementById('mode-toggle');
+      const fontToggle = document.getElementById('font-toggle');
+      const fontSizeSlider = document.getElementById('font-size-slider');
+      const fontSizeValue = document.getElementById('font-size-value');
+      const resizableContent = document.querySelector('.resizable-content');
+      const settingsToggle = document.getElementById('settings-toggle');
+      const settingsMenu = document.getElementById('settings-menu');
+
+      function setMode(isDark) {
+        body.classList.toggle('dark-mode', isDark);
+        modeToggle.textContent = isDark
+          ? '☀️ Toggle Light Mode'
+          : '🌓 Toggle Dark Mode';
+        localStorage.setItem('darkMode', isDark);
+        updateDropdownStyles();
+      }
+
+      function setFont(isDyslexic) {
+        body.classList.toggle('dyslexic-font', isDyslexic);
+        fontToggle.textContent = isDyslexic
+          ? 'Aa Toggle Normal Font'
+          : 'Aa Toggle Dyslexic Font';
+        localStorage.setItem('dyslexicFont', isDyslexic);
+      }
+
+      function setFontSize(size) {
+        resizableContent.style.fontSize = size + '%';
+        fontSizeValue.textContent = size + '%';
+        localStorage.setItem('fontSize', size);
+      }
+
+      function updateDropdownStyles() {
+        if (body.classList.contains('dark-mode')) {
+          settingsMenu.style.backgroundColor = '#2c3e50';
+          settingsMenu.style.color = '#ecf0f1';
+        } else {
+          settingsMenu.style.backgroundColor = '#ecf0f1';
+          settingsMenu.style.color = '#2c3e50';
+        }
+      }
+
+      function toggleSettingsMenu(event) {
+        event.stopPropagation();
+        settingsMenu.classList.toggle('show');
+      }
+
+      const savedMode = localStorage.getItem('darkMode');
+      const savedFont = localStorage.getItem('dyslexicFont');
+      const savedFontSize = localStorage.getItem('fontSize');
+
+      if (savedMode !== null) {
+        setMode(savedMode === 'true');
+      }
+      if (savedFont !== null) {
+        setFont(savedFont === 'true');
+      }
+      if (savedFontSize !== null) {
+        fontSizeSlider.value = savedFontSize;
+        setFontSize(savedFontSize);
+      } else {
+        setFontSize(100);
+      }
+
+      settingsToggle.addEventListener('click', toggleSettingsMenu);
+
+      modeToggle.addEventListener('click', () => {
+        setMode(!body.classList.contains('dark-mode'));
+      });
+
+      fontToggle.addEventListener('click', () => {
+        setFont(!body.classList.contains('dyslexic-font'));
+      });
+
+      fontSizeSlider.addEventListener('input', () => {
+        const size = parseInt(fontSizeSlider.value);
+        setFontSize(size);
+      });
+
+      // Close the dropdown if the user clicks outside of it
+      window.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropbtn') && !settingsMenu.contains(event.target)) {
+          settingsMenu.classList.remove('show');
+        }
+      });
+
+      updateDropdownStyles();
+    </script>
+  </body>
+</html>
